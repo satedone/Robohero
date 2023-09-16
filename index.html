@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Robohero Game</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700;800&family=Jost:wght@400;600;700&family=Montserrat:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800;900&display=swap');
+        
+        body {
+            background-image: url("img/background.png");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center center;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            font-family: 'Jost', sans-serif;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        h1 {
+            font-size: 40px;
+            color: #333;
+        }
+
+        p {
+            font-size: 24px;
+            color: #555;
+        }
+
+        .main {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            flex-grow: 1;
+        }
+
+        img {
+            display: block;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Robohero Game</h1>
+    <p>Let's shoot</p>
+    <div class="main">
+        <img id="robot" src="img/hero.png" alt="Hero">
+    </div>
+    <script>
+        const robot = document.getElementById('robot');
+        let isRotated = false;
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'ArrowLeft') {
+                robot.style.transform = 'scaleX(1)';
+                isRotated = true;
+            } else if (event.key === 'ArrowRight') {
+                robot.style.transform = 'scaleX(-1)';
+                isRotated = true;
+            }
+        });
+
+
+    </script>
+</body>
+</html>
