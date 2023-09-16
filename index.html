@@ -48,24 +48,71 @@
 <body>
     <h1>Robohero Game</h1>
     <p>Let's shoot</p>
+    <span id="direction"></span>
     <div class="main">
         <img id="robot" src="img/hero.png" alt="Hero">
     </div>
+
+    
+
+
     <script>
-        const robot = document.getElementById('robot');
-        let isRotated = false;
+            const robot = document.getElementById('robot');
+            const directionSpan = document.getElementById('direction');
+            let direction = "Left Up"; // по замовченню ліворуч верх
 
-        document.addEventListener('keydown', (event) => {
-            if (event.key === 'ArrowLeft') {
-                robot.style.transform = 'scaleX(1)';
-                isRotated = true;
-            } else if (event.key === 'ArrowRight') {
-                robot.style.transform = 'scaleX(-1)';
-                isRotated = true;
-            }
-        });
+            // Обробник події для натискання клавіш
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'ArrowLeft') {
+                    if (direction === "Left Up") {
+                        direction = "Left Up";
+                    } else if (direction === "Left Down") {
+                        direction = "Left Down";
+                    } else if (direction === "Right Down") {
+                        direction = "Left Down";
+                        robot.style.transform = 'scaleX(1)';
+                    } else if (direction === "Right Up") {
+                        direction = "Left Up";
+                        robot.style.transform = 'scaleX(1)';
+                    }
+                } else if (event.key === 'ArrowRight') {
+                    if (direction === "Right Down") {
+                        direction = "Right Down";
+                    } else if (direction === "Right Up") {
+                        direction = "Right Up";
+                    } else if (direction === "Left Up") {
+                        direction = "Right Up";
+                        robot.style.transform = 'scaleX(-1)';
+                    } else if (direction === "Left Down") {
+                        direction = "Right Down";
+                        robot.style.transform = 'scaleX(-1)';
+                    }
+                } else if (event.key === 'ArrowUp') {
+                    if (direction === "Right Down") {
+                        direction = "Right Up";
+                    } else if (direction === "Right Up") {
+                        direction = "Right Up";
+                    } else if (direction === "Left Up") {
+                        direction = "Left Up";
+                    } else if (direction === "Left Down") {
+                        direction = "Left Up";
+                    }
+                }   else if (event.key === 'ArrowDown') {
+                    if (direction === "Right Down") {
+                        direction = "Right Down";
+                    } else if (direction === "Right Up") {
+                        direction = "Right Down";
+                    } else if (direction === "Left Up") {
+                        direction = "Left Down";
+                    } else if (direction === "Left Down") {
+                        direction = "Left Down";
+                    }
+                }   
+                // Оновлюємо напрямок і відображення span
+                directionSpan.textContent = direction;
+            });
 
-
+                
     </script>
 </body>
 </html>
