@@ -78,24 +78,25 @@
             position: absolute;
             top: 0;
             left: 0;
+            display: none;
         }
 
         .kaka {
-
+            display: none;
             position: absolute;
             top: 0;
             right: 0;
         }
 
         .myaka {
-
+            display: none;
             position: absolute;
             bottom: 0;
             left: 0;
         }
 
         .byaka {
-
+            display: none;
             position: absolute;
             bottom: 0;
             right: 0;
@@ -112,6 +113,7 @@
     <h1>Robohero Game</h1>
     <p>Let's shoot</p>
     <span id="direction">Left Up</span>
+
     <div class="main">
         <img id="robot" src="img/hero.png" alt="Hero">
         <div class="eye">
@@ -179,7 +181,7 @@
                     shot.style.transform = 'rotate(25deg) scaleX(1)';
                     shot.style.bottom = '7px';
                 } else if (direction === "Right Up") {
-                    shot.style.transform = 'rotate(-210deg) scaleX(-1)';
+                    shot.style.transform = 'rotate(-205deg) scaleX(-1)';
                     shot.style.bottom = '3px';
                 } else if (direction === "Left Up") {
                     shot.style.transform = 'rotate(30deg) scaleX(-1)';
@@ -225,8 +227,42 @@
             eye.style.top = eyeY + 'px';
         }
 
-        window.addEventListener('load', updateEyePositions);
-        window.addEventListener('resize', updateEyePositions);
+        const zhuzha = document.querySelector('.zhuzha');
+        const kaka = document.querySelector('.kaka');
+        const myaka = document.querySelector('.myaka');
+        const byaka = document.querySelector('.byaka');
+
+        let monsterInterval; // Змінна для збереження інтервалу показу монстрів
+
+        function showRandomMonster() {
+            const monsters = [zhuzha, kaka, myaka, byaka];
+            const randomIndex = Math.floor(Math.random() * monsters.length);
+            const monsterToShow = monsters[randomIndex];
+
+            monsterToShow.style.display = 'inline';
+
+            setTimeout(() => {
+                monsterToShow.style.display = 'none';
+            }, 1000); // Час в мілісекундах, через який монстр зникне
+        }
+
+        // Викликати showRandomMonster() за допомогою клавіші "1"
+        document.addEventListener('keydown', (event) => {
+            if (event.key === '1') {
+                monsterInterval = setInterval(showRandomMonster, 1000); // Почати інтервал
+            }
+        });
+
+        // Зупиняти показ монстрів за допомогою клавіші "2"
+        document.addEventListener('keydown', (event) => {
+            if (event.key === '2') {
+                clearInterval(monsterInterval); // Зупинити інтервал
+            }
+        });
+
+
+
+
 
     </script>
 </body>
