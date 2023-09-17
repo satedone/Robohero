@@ -56,8 +56,8 @@
         }
 
         .shot {
-            position: absolute; 
-            width: 600px;
+            position: absolute;
+            width: 0;
             height: 10px;
             border-radius: 5px;
             background-color: red;
@@ -71,11 +71,44 @@
             display: block;
             width: 100%;
             height: 100%;
+
+        }
+
+        .zhuzha {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .kaka {
+
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+
+        .myaka {
+
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+
+        .byaka {
+
+            position: absolute;
+            bottom: 0;
+            right: 0;
         }
     </style>
 </head>
 
 <body>
+    <img class="zhuzha" id="zhuzha" src="img/zhuzha.png" alt="Zhuzha">
+    <img class="kaka" id="kaka" src="img/kaka.png" alt="Kaka">
+    <img class="myaka" id="myaka" src="img/myaka.png" alt="Myaka">
+    <img class="byaka" id="byaka" src="img/byaka.png" alt="Byaka">
+
     <h1>Robohero Game</h1>
     <p>Let's shoot</p>
     <span id="direction">Left Up</span>
@@ -84,6 +117,8 @@
         <div class="eye">
             <div class="shot" id="shot"></div>
         </div>
+
+
     </div>
     <script>
         const robot = document.getElementById('robot');
@@ -139,23 +174,37 @@
                     direction = "Left Down";
                 }
             } else if (event.code === 'Space') {
+                let laserWidth = 0;
                 if (direction === "Right Down") {
-                    shot.style.transform = 'rotate(45deg) scaleX(1)';
+                    shot.style.transform = 'rotate(25deg) scaleX(1)';
+                    shot.style.bottom = '7px';
                 } else if (direction === "Right Up") {
-                    shot.style.transform = 'rotate(-225deg) scaleX(-1)';
+                    shot.style.transform = 'rotate(-210deg) scaleX(-1)';
+                    shot.style.bottom = '3px';
                 } else if (direction === "Left Up") {
-                    shot.style.transform = 'rotate(45deg) scaleX(-1)';
+                    shot.style.transform = 'rotate(30deg) scaleX(-1)';
+                    shot.style.bottom = '10px';
                 } else if (direction === "Left Down") {
-                    shot.style.transform = 'rotate(-45deg) scaleX(-1)';
+                    shot.style.transform = 'rotate(-25deg) scaleX(-1)';
+                    shot.style.bottom = '5px';
                 }
+                if (direction === "Right Down" || direction === "Right Up") {
+                    laserWidth = window.innerWidth - shot.getBoundingClientRect().left;
+                } else if (direction === "Left Up" || direction === "Left Down") {
+                    laserWidth = shot.getBoundingClientRect().left;
+                }
+                shot.style.width = laserWidth + 'px';
+                setTimeout(function () {
+                    shot.style.width = '0';
+                }, 1000);
                 setTimeout(function () {
                     shot.style.transform = 'scaleX(0)';
-                }, 100); // 500 мілісекунд (0,5 секунди)
+                }, 100);
             }
 
 
             directionSpan.textContent = direction;
-            updateEyePositions(); // Оновлюємо координати очей при зміні напрямку
+            updateEyePositions();
         });
 
         const eye = document.querySelector('.eye');
