@@ -127,6 +127,11 @@
             transform: translate(-50%, -50%) scale(1);
             /* Збільшуйте масштаб для відображення вибуху */
         }
+
+        .table {
+            display: flex;
+            justify-content: space-evenly;
+        }
     </style>
 </head>
 
@@ -137,7 +142,11 @@
     <img class="byaka" id="byaka" src="img/byaka.png" alt="Byaka">
 
     <h1>Robohero Game</h1>
-    <p>Let's shoot</p>
+    <div class="table">
+        <p>Count: <span id="count">0</span></p>
+        <p>Timer: <span id="timer">60 s</span></p>
+    </div>
+
     <span id="direction">Left Up</span>
 
     <div class="main">
@@ -157,6 +166,11 @@
         const directionSpan = document.getElementById('direction');
         let direction = "Left Up";
         const shot = document.getElementById('shot');
+        let hitCount = 0;
+        let monsterToShow = null;
+        let monsterInterval; // Змінна для збереження інтервалу показу монстрів
+        let gameStarted = false;
+        let gameEnded = false;
 
         document.addEventListener('keydown', (event) => {
             if (event.key === 'ArrowLeft') {
@@ -207,6 +221,8 @@
                 }
             } else if (event.code === 'Space') {
                 let laserWidth = 0;
+
+
                 if (direction === "Right Down") {
                     shot.style.transform = 'rotate(25deg) scaleX(1)';
                     shot.style.bottom = '7px';
@@ -220,6 +236,25 @@
                     shot.style.transform = 'rotate(-25deg) scaleX(-1)';
                     shot.style.bottom = '5px';
                 }
+
+
+                if (monsterToShow === zhuzha && direction === "Left Up") {
+                    hitCount++; // Збільшення лічильника влучань
+                    updateHitCount();
+                }
+                if (monsterToShow === kaka && direction === "Right Up") {
+                    hitCount++; // Збільшення лічильника влучань
+                    updateHitCount();
+                }
+                if (monsterToShow === myaka && direction === "Left Down") {
+                    hitCount++; // Збільшення лічильника влучань
+                    updateHitCount();
+                }
+                if (monsterToShow === byaka && direction === "Right Down") {
+                    hitCount++; // Збільшення лічильника влучань
+                    updateHitCount();
+                }
+
 
                 if (direction === "Right Down" || direction === "Right Up") {
                     laserWidth = window.innerWidth - shot.getBoundingClientRect().left;
@@ -270,33 +305,88 @@
         const myaka = document.querySelector('.myaka');
         const byaka = document.querySelector('.byaka');
 
-        let monsterInterval; // Змінна для збереження інтервалу показу монстрів
+
 
         function showRandomMonster() {
+            if (!gameStarted) {
+                gameStarted = true; // Позначаємо, що гра почалася
+                startTimer(); // Запускаємо таймер
+            }
             const monsters = [zhuzha, kaka, myaka, byaka];
             const randomIndex = Math.floor(Math.random() * monsters.length);
-            const monsterToShow = monsters[randomIndex];
+            monsterToShow = monsters[randomIndex];
 
             monsterToShow.style.display = 'inline';
 
             setTimeout(() => {
                 monsterToShow.style.display = 'none';
-            }, 1000); // Час в мілісекундах, через який монстр зникне
+            }, 500); // Час в мілісекундах, через який монстр зникне
         }
 
         // Викликати showRandomMonster() за допомогою клавіші "1"
         document.addEventListener('keydown', (event) => {
             if (event.key === '1') {
-                monsterInterval = setInterval(showRandomMonster, 1000); // Почати інтервал
+                if (!gameStarted && !gameEnded) {
+                    gameStarted = true; // Позначаємо, що гра почалася
+                    startTimer(); // Запускаємо таймер
+                    monsterInterval = setInterval(showRandomMonster, 1000); // Почати інтервал
+                }
             }
         });
 
         // Зупиняти показ монстрів за допомогою клавіші "2"
         document.addEventListener('keydown', (event) => {
             if (event.key === '2') {
-                clearInterval(monsterInterval); // Зупинити інтервал
+                if (gameStarted && !gameEnded) {
+                    gameEnded = true; // Позначаємо, що гра завершилася
+                    clearInterval(monsterInterval); // Зупинити інтервал
+                    endGame(); // Завершити гру
+                }
             }
         });
+
+
+
+        function endGame() {
+            clearInterval(monsterInterval); // Зупиняємо інтервал
+            gameEnded = true; // Позначаємо, що гра завершилася
+            alert(`Гра завершена! Загальна кількість влучань: ${hitCount}`); // Виводимо повідомлення про закінчення гри
+            // Додайте будь-які інші дії, які потрібно виконати після завершення гри
+        }
+
+        function startTimer() {
+            let timer = 60; // Початковий лічильник часу у секундах
+            const timerElement = document.querySelector('.table p:nth-child(2)'); // Отримуємо елемент таймера
+
+            // Функція для оновлення таймера
+            function updateTimer() {
+                if (gameEnded) {
+                    return; // Не оновлюємо таймер, якщо гра завершилася
+                }
+                timerElement.textContent = `Timer: ${timer} s`; // Відображаємо залишок часу
+                if (timer <= 0) {
+                    endGame(); // Якщо час вийшов, закінчуємо гру
+                } else {
+                    timer--; // Зменшуємо лічильник
+                }
+            }
+
+            // Запускаємо таймер
+            const timerInterval = setInterval(updateTimer, 1000);
+
+            // Початкове оновлення таймера
+            updateTimer();
+        }
+
+        function updateHitCount() {
+            const countElement = document.querySelector('.table p:nth-child(1)'); // Отримуємо елемент для відображення кількості
+            countElement.textContent = `Count: ${hitCount}`;
+        }
+
+        updateHitCount();
+
+
+
 
 
 
