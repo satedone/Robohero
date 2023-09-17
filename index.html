@@ -3,6 +3,7 @@
 
 <head>
     <title>Robohero Game</title>
+    <link rel="icon" href="img/alpha-r-box.svg" type="image/svg+xml">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700;800&family=Jost:wght@400;600;700&family=Montserrat:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800;900&display=swap');
 
@@ -101,6 +102,31 @@
             bottom: 0;
             right: 0;
         }
+
+        .explosion {
+            position: absolute;
+            width: 40px;
+            /* Задайте бажаний розмір */
+            height: 40px;
+            /* Задайте бажаний розмір */
+            background-image: url('img/explosion.svg');
+            /* Додайте посилання на ваш файл вибуху */
+            background-size: cover;
+            background-repeat: no-repeat;
+            transform: translate(-50%, -50%) scale(0);
+            /* Почнемо з масштабу 0, щоб він був невидимим */
+            transition: transform 0.2s ease-out;
+            /* Анімація збільшення */
+            z-index: 3;
+            /* Забезпечте, щоб вибух був над лазером */
+            bottom: 5px;
+            /* Задайте відстань від дна лазера до вибуху */
+        }
+
+        .explosion.active {
+            transform: translate(-50%, -50%) scale(1);
+            /* Збільшуйте масштаб для відображення вибуху */
+        }
     </style>
 </head>
 
@@ -117,8 +143,12 @@
     <div class="main">
         <img id="robot" src="img/hero.png" alt="Hero">
         <div class="eye">
-            <div class="shot" id="shot"></div>
+            <div class="shot" id="shot">
+                <div class="explosion" id="explosion"></div> <!-- Перемістили сюди -->
+            </div>
         </div>
+    </div>
+
 
 
     </div>
@@ -190,6 +220,7 @@
                     shot.style.transform = 'rotate(-25deg) scaleX(-1)';
                     shot.style.bottom = '5px';
                 }
+
                 if (direction === "Right Down" || direction === "Right Up") {
                     laserWidth = window.innerWidth - shot.getBoundingClientRect().left;
                 } else if (direction === "Left Up" || direction === "Left Down") {
@@ -202,6 +233,13 @@
                 setTimeout(function () {
                     shot.style.transform = 'scaleX(0)';
                 }, 100);
+
+                document.getElementById('explosion').classList.add('active'); // Додайте клас під час пострілу
+                setTimeout(function () {
+                    shot.style.transform = 'scaleX(0)';
+                    document.getElementById('explosion').classList.remove('active'); // Видаліть клас після анімації
+                }, 1000);
+
             }
 
 
