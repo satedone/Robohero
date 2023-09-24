@@ -106,31 +106,60 @@
         .explosion {
             position: absolute;
             width: 40px;
-            /* Задайте бажаний розмір */
             height: 40px;
-            /* Задайте бажаний розмір */
             background-image: url('img/explosion.svg');
-            /* Додайте посилання на ваш файл вибуху */
             background-size: cover;
             background-repeat: no-repeat;
             transform: translate(-50%, -50%) scale(0);
-            /* Почнемо з масштабу 0, щоб він був невидимим */
             transition: transform 0.2s ease-out;
-            /* Анімація збільшення */
             z-index: 3;
-            /* Забезпечте, щоб вибух був над лазером */
             bottom: 5px;
-            /* Задайте відстань від дна лазера до вибуху */
         }
 
         .explosion.active {
             transform: translate(-50%, -50%) scale(1);
-            /* Збільшуйте масштаб для відображення вибуху */
         }
 
         .table {
             display: flex;
             justify-content: space-evenly;
+        }
+
+        #direction {
+            display: none;
+        }
+
+        /* Стилі для модального вікна */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            width: 100%;
+            height: 100%;
+            justify-content: center;
+            align-items: center;
+            z-index: 9;
+        }
+
+        .modal-content {
+            width: 600px;
+            height: 200px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        #closeRulesModal {
+            margin-top: 10px;
+            padding: 5px 10px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -142,9 +171,14 @@
     <img class="byaka" id="byaka" src="img/byaka.png" alt="Byaka">
 
     <h1>Robohero Game</h1>
+    <div class="btn_panel">
+        <button id="rules">Rules</button>
+        <button>Start</button>
+        <button>Reset</button>
+    </div>
     <div class="table">
         <p>Count: <span id="count">0</span></p>
-        <p>Timer: <span id="timer">60 s</span></p>
+        <p>Timer: <span id="timer">10 s</span></p>
     </div>
 
     <span id="direction">Left Up</span>
@@ -158,9 +192,17 @@
         </div>
     </div>
 
-
-
+    <!--  -->
+    <!-- Модальне вікно для правил гри -->
+    <div class="modal" id="rulesModal">
+        <div class="modal-content">
+            <h2>Правила гри</h2>
+            <p>Ти - робот герой! Твоя задача - влучити лазером у якомога більшу кількість монстрів протягом 30 секунд.</p>
+            <button id="closeRulesModal">Закрити</button>
+        </div>
     </div>
+    <!--  -->
+
     <script>
         const robot = document.getElementById('robot');
         const directionSpan = document.getElementById('direction');
@@ -264,7 +306,7 @@
                 shot.style.width = laserWidth + 'px';
                 setTimeout(function () {
                     shot.style.width = '0';
-                }, 1000);
+                }, 2000);
                 setTimeout(function () {
                     shot.style.transform = 'scaleX(0)';
                 }, 100);
@@ -273,7 +315,7 @@
                 setTimeout(function () {
                     shot.style.transform = 'scaleX(0)';
                     document.getElementById('explosion').classList.remove('active'); // Видаліть клас після анімації
-                }, 1000);
+                }, 2000);
 
             }
 
@@ -320,7 +362,7 @@
 
             setTimeout(() => {
                 monsterToShow.style.display = 'none';
-            }, 500); // Час в мілісекундах, через який монстр зникне
+            }, 2000); // Час в мілісекундах, через який монстр зникне
         }
 
         // Викликати showRandomMonster() за допомогою клавіші "1"
@@ -329,7 +371,7 @@
                 if (!gameStarted && !gameEnded) {
                     gameStarted = true; // Позначаємо, що гра почалася
                     startTimer(); // Запускаємо таймер
-                    monsterInterval = setInterval(showRandomMonster, 1000); // Почати інтервал
+                    monsterInterval = setInterval(showRandomMonster, 3000); // Почати інтервал
                 }
             }
         });
@@ -355,7 +397,7 @@
         }
 
         function startTimer() {
-            let timer = 60; // Початковий лічильник часу у секундах
+            let timer = 30; // Початковий лічильник часу у секундах
             const timerElement = document.querySelector('.table p:nth-child(2)'); // Отримуємо елемент таймера
 
             // Функція для оновлення таймера
@@ -388,7 +430,22 @@
 
 
 
+        // Функція для показу модального вікна з правилами гри
+        function showRulesModal() {
+            const rulesModal = document.getElementById('rulesModal');
+            rulesModal.style.display = 'flex'; // Показуємо модальне вікно
+        }
 
+        // Запускаємо функцію показу модального вікна при натисканні на кнопку "Rules"
+        const rulesButton = document.getElementById('rules');
+        rulesButton.addEventListener('click', showRulesModal);
+
+        // Закриття модального вікна при кліку на кнопку "Закрити"
+        const closeRulesModal = document.getElementById('closeRulesModal');
+        closeRulesModal.addEventListener('click', function () {
+            const rulesModal = document.getElementById('rulesModal');
+            rulesModal.style.display = 'none'; // Приховуємо модальне вікно при кліку
+        });
 
 
 
