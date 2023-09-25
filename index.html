@@ -4,180 +4,7 @@
 <head>
     <title>Robohero Game</title>
     <link rel="icon" href="img/alpha-r-box.svg" type="image/svg+xml">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700;800&family=Jost:wght@400;600;700&family=Montserrat:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800;900&display=swap');
-
-        body {
-            background-image: url("img/background.png");
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            background-position: center center;
-            text-align: center;
-            margin: 0;
-            padding: 0;
-            font-family: 'Jost', sans-serif;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        h1 {
-            font-size: 40px;
-            color: #333;
-        }
-
-        p {
-            font-size: 24px;
-            color: #555;
-        }
-
-        .main {
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            align-items: center;
-            flex-grow: 1;
-        }
-
-        img {
-            display: block;
-            margin: 0 auto;
-        }
-
-        .eye {
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background-color: red;
-            border-radius: 50%;
-            z-index: 2;
-        }
-
-        .shot {
-            position: absolute;
-            width: 0;
-            height: 10px;
-            border-radius: 5px;
-            background-color: red;
-            transform-origin: 5px center;
-            transform: scaleX(0);
-            z-index: 2;
-        }
-
-        .shot::before {
-            content: '';
-            display: block;
-            width: 100%;
-            height: 100%;
-
-        }
-
-        .zhuzha {
-            position: absolute;
-            top: 0;
-            left: 0;
-            display: none;
-        }
-
-        .kaka {
-            display: none;
-            position: absolute;
-            top: 0;
-            right: 0;
-        }
-
-        .myaka {
-            display: none;
-            position: absolute;
-            bottom: 0;
-            left: 0;
-        }
-
-        .byaka {
-            display: none;
-            position: absolute;
-            bottom: 0;
-            right: 0;
-        }
-
-        .explosion {
-            position: absolute;
-            width: 40px;
-            height: 40px;
-            background-image: url('img/explosion.svg');
-            background-size: cover;
-            background-repeat: no-repeat;
-            transform: translate(-50%, -50%) scale(0);
-            transition: transform 0.2s ease-out;
-            z-index: 3;
-            bottom: 5px;
-        }
-
-        .explosion.active {
-            transform: translate(-50%, -50%) scale(1);
-        }
-
-        .table {
-            display: flex;
-            justify-content: space-evenly;
-        }
-
-        #direction {
-            display: none;
-        }
-
-        /* Стилі для модального вікна */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            background-color: rgba(0, 0, 0, 0.7);
-            width: 100%;
-            height: 100%;
-            justify-content: center;
-            align-items: center;
-            z-index: 9;
-        }
-
-        .modal-content {
-            width: 600px;
-            height: 200px;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-        }
-
-        #closeRulesModal {
-            margin-top: 10px;
-            padding: 5px 10px;
-            background-color: #333;
-            color: #fff;
-            border: none;
-            border-radius: 3px;
-            cursor: pointer;
-        }
-
-        /* Стилі для блоку погоди */
-        .weather-background {
-            position: fixed;
-            bottom: 10px;
-            right: 10px;
-            background-color: rgba(255, 255, 255, 0.8);
-            padding: 10px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-        }
-
-        /* Стилі для тексту погоди */
-        .weather-text {
-            font-size: 16px;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -188,17 +15,15 @@
 
     <h1>Robohero Game</h1>
     <div class="btn_panel">
-        <button id="rules">Rules</button>
-        <button>Start</button>
-        <button>Reset</button>
+        <button id="rules" class="btn">Rules</button>
+        <button id="start" class="btn">Start</button>
+        <button id="reset" class="btn">Reset</button>
     </div>
     <div class="table">
         <p>Count: <span id="count">0</span></p>
-        <p>Timer: <span id="timer">10 s</span></p>
+        <p>Outside: <span id="temperature-value">___</span></p>
+        <p>Timer: <span id="timer">30 s</span></p>
     </div>
-    <!--  -->
-
-    <!--  -->
 
     <span id="direction">Left Up</span>
 
@@ -213,17 +38,15 @@
     </div>
 
     <!-- Блок погоди -->
-    <div class="weather-background">
-        <p class="weather-text">Температура зовні: <span id="temperature-value">___</span></p>
-    </div>
+    
     <!--  -->
     <!-- Модальне вікно для правил гри -->
     <div class="modal" id="rulesModal">
         <div class="modal-content">
-            <h2>Правила гри</h2>
-            <p>Ти - робот герой! Твоя задача - влучити лазером у якомога більшу кількість монстрів протягом 30 секунд.
+            <h2>Rules</h2>
+            <p>You are a Robot Hero! Your task is to hit as many monsters with your laser as possible within 30 seconds.
             </p>
-            <button id="closeRulesModal">Закрити</button>
+            <button id="closeRulesModal">OK</button>
         </div>
     </div>
     <!--  -->
