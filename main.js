@@ -261,8 +261,9 @@ function endGame() {
     startStopButton.classList.remove('active');
     clearInterval(monsterInterval);
     alert(`Гра завершена! Загальна кількість влучань: ${hitCount}`);
+    // openResultModal(); відкриваємо вікно результату
     gameStarted = false;
-    timer = 30;
+    timer = 60;
     hitCount = 0;
     updateHitCount();
 
@@ -270,7 +271,7 @@ function endGame() {
 
 // Таймер 
 let timerInterval;
-let timer = 30;
+let timer = 60;
 
 function startTimer() {
     const timerElement = document.querySelector('.table p:nth-child(3)'); // Отримуємо елемент таймера
@@ -278,7 +279,7 @@ function startTimer() {
     // Функція для оновлення таймера
     function updateTimer() {
         const timerElement = document.querySelector('.table p:nth-child(3)'); // Отримуємо елемент таймера
-        const timerText = gameStarted ? `Timer: ${timer} s` : 'Timer: 30 s';
+        const timerText = gameStarted ? `Timer: ${timer} s` : 'Timer: 60 s';
 
         timerElement.textContent = timerText;
         if (timer <= 0 && gameStarted) {
@@ -344,3 +345,23 @@ closeKeysModal.addEventListener('click', function () {
     keysModal.style.display = 'none'; // Приховуємо модальне вікно при кліку
 });
 
+// // РЕЗУЛЬТАТ 
+
+// const resultModal = document.getElementById('resultModal');
+// const resultHitCount = document.getElementById('resultHitCount');
+// const closeResultModal = document.getElementById('closeResultModal');
+
+// // Функція для відкриття модального вікна з результатом
+// function openResultModal() {
+//     resultHitCount.textContent = hitCount;
+//     resultModal.style.display = 'block';
+// }
+
+// // Функція для закриття модального вікна з результатом
+// function closeResultModal() {
+//     resultModal.style.display = 'none';
+// }
+
+// const closeResultModalButton = document.getElementById('closeResultModal');
+// ...
+// closeResultModalButton.addEventListener('click', closeResultModal);

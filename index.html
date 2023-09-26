@@ -23,7 +23,7 @@
     <div class="table">
         <p>Count: <span id="count">0</span></p>
         <p>Outside: <span id="temperature-value">___</span></p>
-        <p>Timer: <span id="timer">30 s</span></p>
+        <p>Timer: <span id="timer">60 s</span></p>
     </div>
 
     <span id="direction">Left Up</span>
@@ -45,7 +45,7 @@
     <div class="modal" id="rulesModal">
         <div class="modal-content">
             <h2>Rules</h2>
-            <p>You are a Robot Hero! Your task is to hit as many monsters with your laser as possible within 30 seconds.
+            <p>You are a Robot Hero! Your task is to hit as many as possible monsters within 30 seconds.
             </p>
             <button id="closeRulesModal">OK</button>
         </div>
@@ -56,14 +56,23 @@
     <div class="keys" id="keysModal">
         <div class="keys-content">
             <h2>CONTROL KEYS</h2>
-            <span>Push 1 - to start and </span>
-            <span>2 - to finish or it will be after 30 sec</span>
+            <span>1 - start    </span>
+            <span>2 - finish</span>
             <img src="/img/keys.png" alt="keys">
             <button id="closeKeysModal">OK</button>
 
         </div>
     </div>
     <!--  -->
+    
+    <!-- Модальне вікно результат -->
+    <div id="resultModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeResultModal">&times;</span>
+            <h2>Гра завершена!</h2>
+            <p>Загальна кількість влучань: <span id="resultHitCount"></span></p>
+        </div>
+    </div>
 
     <script src="main.js"></script>
     <script src="api.js"></script>
