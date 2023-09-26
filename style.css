@@ -98,6 +98,13 @@ img {
     right: 0;
 }
 
+.explosion {
+    position: absolute; 
+    z-index: 9999; 
+    pointer-events: none; 
+    display: none;
+}
+
 
 .table {
     display: flex;

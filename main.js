@@ -8,6 +8,7 @@ let monsterInterval;
 let gameStarted = false;
 
 
+
 // Код для кнопки "Start/Stop"
 const startStopButton = document.getElementById('start-stop');
 
@@ -126,21 +127,51 @@ document.addEventListener('keydown', (event) => {
 
         if (monsterToShow === zhuzha && direction === "Left Up") {
             hitCount++;
+
+            // Встановлюємо координати вибуху на позицію монстра
+            const monsterRect = monsterToShow.getBoundingClientRect();
+            explosion.style.left = `${monsterRect.left + 30}px`;
+            explosion.style.top = `${monsterRect.top + 10}px`;
+            explosion.style.display = 'block';
+            setTimeout(() => {
+                explosion.style.display = 'none';
+            }, 500);
             updateHitCount();
             canShoot = false;
         }
         if (monsterToShow === kaka && direction === "Right Up") {
             hitCount++;
+            const monsterRect = monsterToShow.getBoundingClientRect();
+            explosion.style.left = `${monsterRect.left}px`;
+            explosion.style.top = `${monsterRect.top}px`;
+            explosion.style.display = 'block';
+            setTimeout(() => {
+                explosion.style.display = 'none';
+            }, 500);
             updateHitCount();
             canShoot = false;
         }
         if (monsterToShow === myaka && direction === "Left Down") {
             hitCount++;
+            const monsterRect = monsterToShow.getBoundingClientRect();
+            explosion.style.left = `${monsterRect.left}px`;
+            explosion.style.top = `${monsterRect.top}px`;
+            explosion.style.display = 'block';
+            setTimeout(() => {
+                explosion.style.display = 'none';
+            }, 500);
             updateHitCount();
             canShoot = false;
         }
         if (monsterToShow === byaka && direction === "Right Down") {
             hitCount++;
+            const monsterRect = monsterToShow.getBoundingClientRect();
+            explosion.style.left = `${monsterRect.left}px`;
+            explosion.style.top = `${monsterRect.top +70}px`;
+            explosion.style.display = 'block';
+            setTimeout(() => {
+                explosion.style.display = 'none';
+            }, 500);
             updateHitCount();
             canShoot = false;
         }
@@ -167,10 +198,13 @@ document.addEventListener('keydown', (event) => {
 });
 
 // Постріл з ока
-const laserSound = document.getElementById('laserSound'); // звук лазера 
 const eye = document.querySelector('.eye');
+eye.style.display = "none"
+
+const explosion = document.getElementById('explosion');
 
 function updateEyePositions() {
+    eye.style.display = "inline"
     const robotRect = robot.getBoundingClientRect();
     let eyeX, eyeY;
 
@@ -216,7 +250,7 @@ function showRandomMonster() {
     setTimeout(() => {
         monsterToShow.style.display = 'none';
     }, monsterDisplayTime);
-    
+
 
 }
 
@@ -226,11 +260,11 @@ function endGame() {
     startStopButton.textContent = 'Start';
     startStopButton.classList.remove('active');
     clearInterval(monsterInterval);
-    updateHitCount();    
     alert(`Гра завершена! Загальна кількість влучань: ${hitCount}`);
     gameStarted = false;
     timer = 30;
     hitCount = 0;
+    updateHitCount();
 
 }
 
