@@ -1,14 +1,64 @@
-
-
 const robot = document.getElementById('robot');
 const directionSpan = document.getElementById('direction');
 let direction = "Left Up";
 const shot = document.getElementById('shot');
 let hitCount = 0;
 let monsterToShow = null;
-let monsterInterval; // Змінна для збереження інтервалу показу монстрів
+let monsterInterval;
 let gameStarted = false;
-let gameEnded = false;
+
+
+// Код для кнопки "Start/Stop"
+const startStopButton = document.getElementById('start-stop');
+
+startStopButton.addEventListener('click', function () {
+    if (gameStarted) {
+        // Якщо гра вже запущена, то зупиняємо гру
+        endGame();
+    } else {
+        // Якщо гра не запущена, то запускаємо її
+        startGame();
+    }
+    startStopButton.blur();
+});
+
+
+
+
+
+
+// Функція для запуску гри
+function startGame() {
+    startStopButton.textContent = 'Stop';
+    startStopButton.classList.add('active');
+    if (!gameStarted) {
+        gameStarted = true; // Позначаємо, що гра почалася
+        startTimer(); // Запускаємо таймер
+        monsterInterval = setInterval(showRandomMonster, 3000); // Почати інтервал
+    }
+}
+
+function resetGame() {
+    gameStarted = false; // Скидаємо стан гри
+    hitCount = 0; // Обнуляємо рахунок
+    updateHitCount(); // Оновлюємо відображення рахунку
+    startTimer(); // Оновлюємо таймер
+}
+
+// Викликати showRandomMonster() за допомогою клавіші "1"
+document.addEventListener('keydown', (event) => {
+    if (event.key === '1') {
+        startGame(); // Запускаємо гру при натисканні "1"
+    }
+});
+
+// Зупиняти показ монстрів за допомогою клавіші "2"
+document.addEventListener('keydown', (event) => {
+    if (event.key === '2') {
+        endGame(); // Зупиняємо гру при натисканні "2"
+    }
+});
+
 
 document.addEventListener('keydown', (event) => {
     if (event.key === 'ArrowLeft') {
@@ -161,67 +211,61 @@ function showRandomMonster() {
     }, 2000); // Час в мілісекундах, через який монстр зникне
 }
 
-// Викликати showRandomMonster() за допомогою клавіші "1"
-document.addEventListener('keydown', (event) => {
-    if (event.key === '1') {
-        if (!gameStarted && !gameEnded) {
-            gameStarted = true; // Позначаємо, що гра почалася
-            startTimer(); // Запускаємо таймер
-            monsterInterval = setInterval(showRandomMonster, 3000); // Почати інтервал
-        }
-    }
-});
-
-// Зупиняти показ монстрів за допомогою клавіші "2"
-document.addEventListener('keydown', (event) => {
-    if (event.key === '2') {
-        if (gameStarted && !gameEnded) {
-            gameEnded = true; // Позначаємо, що гра завершилася
-            clearInterval(monsterInterval); // Зупинити інтервал
-            endGame(); // Завершити гру
-        }
-    }
-});
-
 
 
 function endGame() {
-    clearInterval(monsterInterval); // Зупиняємо інтервал
-    gameEnded = true; // Позначаємо, що гра завершилася
-    alert(`Гра завершена! Загальна кількість влучань: ${hitCount}`); // Виводимо повідомлення про закінчення гри
-    // Додайте будь-які інші дії, які потрібно виконати після завершення гри
+    startStopButton.textContent = 'Start';
+    startStopButton.classList.remove('active');
+    clearInterval(monsterInterval); 
+    gameStarted = false; 
+    updateHitCount();
+    timer = 30;
+    alert(`Гра завершена! Загальна кількість влучань: ${hitCount}`);
+    
 }
 
+let timerInterval; 
+let timer = 30; 
+
 function startTimer() {
-    let timer = 30; // Початковий лічильник часу у секундах
     const timerElement = document.querySelector('.table p:nth-child(3)'); // Отримуємо елемент таймера
 
     // Функція для оновлення таймера
     function updateTimer() {
-        if (gameEnded) {
-            return; // Не оновлюємо таймер, якщо гра завершилася
-        }
-        timerElement.textContent = `Timer: ${timer} s`; // Відображаємо залишок часу
-        if (timer <= 0) {
+        const timerElement = document.querySelector('.table p:nth-child(3)'); // Отримуємо елемент таймера
+        
+        // Використовуємо тернарний оператор для визначення тексту таймера
+        const timerText = gameStarted ? `Timer: ${timer} s` : 'Timer: 30 s';
+    
+        timerElement.textContent = timerText; // Відображаємо текст таймера
+        if (timer <= 0 && gameStarted) {
+            clearInterval(timerInterval); // Зупиняємо інтервал, якщо час вийшов
             endGame(); // Якщо час вийшов, закінчуємо гру
-        } else {
-            timer--; // Зменшуємо лічильник
+        } else if (gameStarted) {
+            timer--; // Зменшуємо лічильник, якщо гра запущена
         }
     }
 
-    // Запускаємо таймер
-    const timerInterval = setInterval(updateTimer, 1000);
+    // Зупиняємо попередній інтервал, якщо він існує
+    if (timerInterval) {
+        clearInterval(timerInterval);
+    }
+
+    // Запускаємо новий інтервал
+    timerInterval = setInterval(updateTimer, 1000);
 
     // Початкове оновлення таймера
     updateTimer();
 }
 
+
 function updateHitCount() {
     const countElement = document.querySelector('.table p:nth-child(1)'); // Отримуємо елемент для відображення кількості
-    countElement.textContent = `Count: ${hitCount}`;
+    countElement.textContent = `Count: ${gameStarted ? hitCount : 0}`; // Відображаємо рахунок або 0, якщо гра не запущена
 }
 
 updateHitCount();
+
 
 
 
@@ -248,7 +292,7 @@ function showKeysModal() {
     const keysModal = document.getElementById('keysModal');
     keysModal.style.display = 'flex'; // Показуємо модальне вікно
 }
-    
+
 // Запускаємо функцію показу модального вікна при натисканні на кнопку "Rules"
 const keysButton = document.getElementById('keys');
 keysButton.addEventListener('click', showKeysModal);
@@ -259,3 +303,4 @@ closeKeysModal.addEventListener('click', function () {
     const keysModal = document.getElementById('keysModal');
     keysModal.style.display = 'none'; // Приховуємо модальне вікно при кліку
 });
+

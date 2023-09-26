@@ -173,6 +173,12 @@ img {
     text-decoration: none;
 }
 
+/* Стилі для натиснутої кнопки */
+.btn_panel .btn.active {
+    background-color: #fff;
+    color: #333;
+}
+
 /* Стилі для модального вікна клавіатури*/
 .keys {
     display: none;
