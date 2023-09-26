@@ -104,6 +104,13 @@ img {
     justify-content: space-evenly;
 }
 
+.table p {
+    width: 300px; 
+    text-align: center; 
+}
+
+
+
 #direction {
     display: none;
 }

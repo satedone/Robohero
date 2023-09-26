@@ -13,10 +13,8 @@ const startStopButton = document.getElementById('start-stop');
 
 startStopButton.addEventListener('click', function () {
     if (gameStarted) {
-        // Якщо гра вже запущена, то зупиняємо гру
         endGame();
     } else {
-        // Якщо гра не запущена, то запускаємо її
         startGame();
     }
     startStopButton.blur();
@@ -32,30 +30,30 @@ function startGame() {
     startStopButton.textContent = 'Stop';
     startStopButton.classList.add('active');
     if (!gameStarted) {
-        gameStarted = true; // Позначаємо, що гра почалася
-        startTimer(); // Запускаємо таймер
+        gameStarted = true; 
+        startTimer(); 
         monsterInterval = setInterval(showRandomMonster, 3000); // Почати інтервал
     }
 }
 
 function resetGame() {
-    gameStarted = false; // Скидаємо стан гри
-    hitCount = 0; // Обнуляємо рахунок
-    updateHitCount(); // Оновлюємо відображення рахунку
-    startTimer(); // Оновлюємо таймер
+    gameStarted = false; 
+    hitCount = 0;
+    updateHitCount(); 
+    startTimer(); 
 }
 
-// Викликати showRandomMonster() за допомогою клавіші "1"
+// Почати гру за допомогою клавіші "1"
 document.addEventListener('keydown', (event) => {
     if (event.key === '1') {
-        startGame(); // Запускаємо гру при натисканні "1"
+        startGame(); 
     }
 });
 
-// Зупиняти показ монстрів за допомогою клавіші "2"
+// Зупиняти гру за допомогою клавіші "2"
 document.addEventListener('keydown', (event) => {
     if (event.key === '2') {
-        endGame(); // Зупиняємо гру при натисканні "2"
+        endGame(); 
     }
 });
 
@@ -127,19 +125,19 @@ document.addEventListener('keydown', (event) => {
 
 
         if (monsterToShow === zhuzha && direction === "Left Up") {
-            hitCount++; // Збільшення лічильника влучань
+            hitCount++; 
             updateHitCount();
         }
         if (monsterToShow === kaka && direction === "Right Up") {
-            hitCount++; // Збільшення лічильника влучань
+            hitCount++; 
             updateHitCount();
         }
         if (monsterToShow === myaka && direction === "Left Down") {
-            hitCount++; // Збільшення лічильника влучань
+            hitCount++; 
             updateHitCount();
         }
         if (monsterToShow === byaka && direction === "Right Down") {
-            hitCount++; // Збільшення лічильника влучань
+            hitCount++; 
             updateHitCount();
         }
 
@@ -170,6 +168,8 @@ document.addEventListener('keydown', (event) => {
     updateEyePositions();
 });
 
+// Постріл з ока
+
 const eye = document.querySelector('.eye');
 
 function updateEyePositions() {
@@ -188,17 +188,20 @@ function updateEyePositions() {
     eye.style.top = eyeY + 'px';
 }
 
+// МОНСТРИ
+
 const zhuzha = document.querySelector('.zhuzha');
 const kaka = document.querySelector('.kaka');
 const myaka = document.querySelector('.myaka');
 const byaka = document.querySelector('.byaka');
 
+monsterDisplayTime = 2000; // Час в мілісекундах, через який монстр зникне
 
-
+// Показ монстрів
 function showRandomMonster() {
     if (!gameStarted) {
-        gameStarted = true; // Позначаємо, що гра почалася
-        startTimer(); // Запускаємо таймер
+        gameStarted = true; 
+        startTimer(); 
     }
     const monsters = [zhuzha, kaka, myaka, byaka];
     const randomIndex = Math.floor(Math.random() * monsters.length);
@@ -208,7 +211,7 @@ function showRandomMonster() {
 
     setTimeout(() => {
         monsterToShow.style.display = 'none';
-    }, 2000); // Час в мілісекундах, через який монстр зникне
+    }, monsterDisplayTime); 
 }
 
 
@@ -224,6 +227,7 @@ function endGame() {
     
 }
 
+// Таймер 
 let timerInterval; 
 let timer = 30; 
 
@@ -233,28 +237,23 @@ function startTimer() {
     // Функція для оновлення таймера
     function updateTimer() {
         const timerElement = document.querySelector('.table p:nth-child(3)'); // Отримуємо елемент таймера
-        
-        // Використовуємо тернарний оператор для визначення тексту таймера
         const timerText = gameStarted ? `Timer: ${timer} s` : 'Timer: 30 s';
     
-        timerElement.textContent = timerText; // Відображаємо текст таймера
+        timerElement.textContent = timerText; 
         if (timer <= 0 && gameStarted) {
-            clearInterval(timerInterval); // Зупиняємо інтервал, якщо час вийшов
-            endGame(); // Якщо час вийшов, закінчуємо гру
+            clearInterval(timerInterval); 
+            endGame(); 
         } else if (gameStarted) {
-            timer--; // Зменшуємо лічильник, якщо гра запущена
+            timer--; 
         }
     }
 
-    // Зупиняємо попередній інтервал, якщо він існує
     if (timerInterval) {
         clearInterval(timerInterval);
     }
 
-    // Запускаємо новий інтервал
     timerInterval = setInterval(updateTimer, 1000);
 
-    // Початкове оновлення таймера
     updateTimer();
 }
 
