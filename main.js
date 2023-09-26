@@ -107,7 +107,7 @@ document.addEventListener('keydown', (event) => {
         }
     } else if (event.code === 'Space' && canShoot) {
         let laserWidth = 0;
-
+        laserSound.play();
 
         if (direction === "Right Down") {
             shot.style.transform = 'rotate(25deg) scaleX(1)';
@@ -167,7 +167,7 @@ document.addEventListener('keydown', (event) => {
 });
 
 // Постріл з ока
-
+const laserSound = document.getElementById('laserSound'); // звук лазера 
 const eye = document.querySelector('.eye');
 
 function updateEyePositions() {
@@ -226,10 +226,11 @@ function endGame() {
     startStopButton.textContent = 'Start';
     startStopButton.classList.remove('active');
     clearInterval(monsterInterval);
-    gameStarted = false;
-    updateHitCount();
-    timer = 30;
+    updateHitCount();    
     alert(`Гра завершена! Загальна кількість влучань: ${hitCount}`);
+    gameStarted = false;
+    timer = 30;
+    hitCount = 0;
 
 }
 
