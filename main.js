@@ -30,30 +30,30 @@ function startGame() {
     startStopButton.textContent = 'Stop';
     startStopButton.classList.add('active');
     if (!gameStarted) {
-        gameStarted = true; 
-        startTimer(); 
+        gameStarted = true;
+        startTimer();
         monsterInterval = setInterval(showRandomMonster, 3000); // Почати інтервал
     }
 }
 
 function resetGame() {
-    gameStarted = false; 
+    gameStarted = false;
     hitCount = 0;
-    updateHitCount(); 
-    startTimer(); 
+    updateHitCount();
+    startTimer();
 }
 
 // Почати гру за допомогою клавіші "1"
 document.addEventListener('keydown', (event) => {
     if (event.key === '1') {
-        startGame(); 
+        startGame();
     }
 });
 
 // Зупиняти гру за допомогою клавіші "2"
 document.addEventListener('keydown', (event) => {
     if (event.key === '2') {
-        endGame(); 
+        endGame();
     }
 });
 
@@ -105,7 +105,7 @@ document.addEventListener('keydown', (event) => {
         } else if (direction === "Left Down") {
             direction = "Left Down";
         }
-    } else if (event.code === 'Space') {
+    } else if (event.code === 'Space' && canShoot) {
         let laserWidth = 0;
 
 
@@ -125,20 +125,24 @@ document.addEventListener('keydown', (event) => {
 
 
         if (monsterToShow === zhuzha && direction === "Left Up") {
-            hitCount++; 
+            hitCount++;
             updateHitCount();
+            canShoot = false;
         }
         if (monsterToShow === kaka && direction === "Right Up") {
-            hitCount++; 
+            hitCount++;
             updateHitCount();
+            canShoot = false;
         }
         if (monsterToShow === myaka && direction === "Left Down") {
-            hitCount++; 
+            hitCount++;
             updateHitCount();
+            canShoot = false;
         }
         if (monsterToShow === byaka && direction === "Right Down") {
-            hitCount++; 
+            hitCount++;
             updateHitCount();
+            canShoot = false;
         }
 
 
@@ -154,12 +158,6 @@ document.addEventListener('keydown', (event) => {
         setTimeout(function () {
             shot.style.transform = 'scaleX(0)';
         }, 100);
-
-        document.getElementById('explosion').classList.add('active'); // Додайте клас під час пострілу
-        setTimeout(function () {
-            shot.style.transform = 'scaleX(0)';
-            document.getElementById('explosion').classList.remove('active'); // Видаліть клас після анімації
-        }, 2000);
 
     }
 
@@ -195,23 +193,31 @@ const kaka = document.querySelector('.kaka');
 const myaka = document.querySelector('.myaka');
 const byaka = document.querySelector('.byaka');
 
-monsterDisplayTime = 2000; // Час в мілісекундах, через який монстр зникне
+const monsterDisplayTime = 1000; // Час в мілісекундах, через який монстр зникне
+let canShoot = true; // можливість стріляти
+// Проміжок між монстрами 
+
+
+
+
 
 // Показ монстрів
 function showRandomMonster() {
     if (!gameStarted) {
-        gameStarted = true; 
-        startTimer(); 
+        gameStarted = true;
+        startTimer();
     }
     const monsters = [zhuzha, kaka, myaka, byaka];
     const randomIndex = Math.floor(Math.random() * monsters.length);
     monsterToShow = monsters[randomIndex];
 
     monsterToShow.style.display = 'inline';
-
+    canShoot = true;
     setTimeout(() => {
         monsterToShow.style.display = 'none';
-    }, monsterDisplayTime); 
+    }, monsterDisplayTime);
+    
+
 }
 
 
@@ -219,17 +225,17 @@ function showRandomMonster() {
 function endGame() {
     startStopButton.textContent = 'Start';
     startStopButton.classList.remove('active');
-    clearInterval(monsterInterval); 
-    gameStarted = false; 
+    clearInterval(monsterInterval);
+    gameStarted = false;
     updateHitCount();
     timer = 30;
     alert(`Гра завершена! Загальна кількість влучань: ${hitCount}`);
-    
+
 }
 
 // Таймер 
-let timerInterval; 
-let timer = 30; 
+let timerInterval;
+let timer = 30;
 
 function startTimer() {
     const timerElement = document.querySelector('.table p:nth-child(3)'); // Отримуємо елемент таймера
@@ -238,13 +244,13 @@ function startTimer() {
     function updateTimer() {
         const timerElement = document.querySelector('.table p:nth-child(3)'); // Отримуємо елемент таймера
         const timerText = gameStarted ? `Timer: ${timer} s` : 'Timer: 30 s';
-    
-        timerElement.textContent = timerText; 
+
+        timerElement.textContent = timerText;
         if (timer <= 0 && gameStarted) {
-            clearInterval(timerInterval); 
-            endGame(); 
+            clearInterval(timerInterval);
+            endGame();
         } else if (gameStarted) {
-            timer--; 
+            timer--;
         }
     }
 
