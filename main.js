@@ -51,7 +51,7 @@ document.addEventListener('keydown', (event) => {
     }
 });
 
-// Зупиняти гру за допомогою клавіші "2"
+// Завершити гру за допомогою клавіші "2"
 document.addEventListener('keydown', (event) => {
     if (event.key === '2') {
         endGame();
@@ -111,16 +111,17 @@ document.addEventListener('keydown', (event) => {
         laserSound.play();
 
         if (direction === "Right Down") {
-            shot.style.transform = 'rotate(25deg) scaleX(1)';
+            shot.style.transform = 'rotate(22deg) scaleX(1)';
             shot.style.bottom = '7px';
+            
         } else if (direction === "Right Up") {
             shot.style.transform = 'rotate(-205deg) scaleX(-1)';
             shot.style.bottom = '3px';
         } else if (direction === "Left Up") {
-            shot.style.transform = 'rotate(30deg) scaleX(-1)';
+            shot.style.transform = 'rotate(28deg) scaleX(-1)';
             shot.style.bottom = '10px';
         } else if (direction === "Left Down") {
-            shot.style.transform = 'rotate(-25deg) scaleX(-1)';
+            shot.style.transform = 'rotate(-23deg) scaleX(-1)';
             shot.style.bottom = '5px';
         }
 
@@ -130,8 +131,8 @@ document.addEventListener('keydown', (event) => {
 
             // Встановлюємо координати вибуху на позицію монстра
             const monsterRect = monsterToShow.getBoundingClientRect();
-            explosion.style.left = `${monsterRect.left + 30}px`;
-            explosion.style.top = `${monsterRect.top + 10}px`;
+            explosion.style.left = `${monsterRect.left + 50}px`;
+            explosion.style.top = `${monsterRect.top + 30}px`;
             explosion.style.display = 'block';
             setTimeout(() => {
                 explosion.style.display = 'none';
@@ -142,8 +143,8 @@ document.addEventListener('keydown', (event) => {
         if (monsterToShow === kaka && direction === "Right Up") {
             hitCount++;
             const monsterRect = monsterToShow.getBoundingClientRect();
-            explosion.style.left = `${monsterRect.left}px`;
-            explosion.style.top = `${monsterRect.top}px`;
+            explosion.style.left = `${monsterRect.left + 50}px`;
+            explosion.style.top = `${monsterRect.top + 50}px`;
             explosion.style.display = 'block';
             setTimeout(() => {
                 explosion.style.display = 'none';
@@ -154,8 +155,8 @@ document.addEventListener('keydown', (event) => {
         if (monsterToShow === myaka && direction === "Left Down") {
             hitCount++;
             const monsterRect = monsterToShow.getBoundingClientRect();
-            explosion.style.left = `${monsterRect.left}px`;
-            explosion.style.top = `${monsterRect.top}px`;
+            explosion.style.left = `${monsterRect.left + 70}px`;
+            explosion.style.top = `${monsterRect.top + 130}px`;
             explosion.style.display = 'block';
             setTimeout(() => {
                 explosion.style.display = 'none';
@@ -166,8 +167,8 @@ document.addEventListener('keydown', (event) => {
         if (monsterToShow === byaka && direction === "Right Down") {
             hitCount++;
             const monsterRect = monsterToShow.getBoundingClientRect();
-            explosion.style.left = `${monsterRect.left}px`;
-            explosion.style.top = `${monsterRect.top +70}px`;
+            explosion.style.left = `${monsterRect.left + 50}px`;
+            explosion.style.top = `${monsterRect.top + 150}px`;
             explosion.style.display = 'block';
             setTimeout(() => {
                 explosion.style.display = 'none';
@@ -260,10 +261,10 @@ function endGame() {
     startStopButton.textContent = 'Start';
     startStopButton.classList.remove('active');
     clearInterval(monsterInterval);
-    alert(`Гра завершена! Загальна кількість влучань: ${hitCount}`);
-    // openResultModal(); відкриваємо вікно результату
+    // alert(`Гра завершена! Загальна кількість влучань: ${hitCount}`);
+    openResultModal(); // відкриваємо вікно результату
     gameStarted = false;
-    timer = 60;
+    timer = 30;
     hitCount = 0;
     updateHitCount();
 
@@ -271,7 +272,7 @@ function endGame() {
 
 // Таймер 
 let timerInterval;
-let timer = 60;
+let timer = 30;
 
 function startTimer() {
     const timerElement = document.querySelector('.table p:nth-child(3)'); // Отримуємо елемент таймера
@@ -279,7 +280,7 @@ function startTimer() {
     // Функція для оновлення таймера
     function updateTimer() {
         const timerElement = document.querySelector('.table p:nth-child(3)'); // Отримуємо елемент таймера
-        const timerText = gameStarted ? `Timer: ${timer} s` : 'Timer: 60 s';
+        const timerText = gameStarted ? `Timer: ${timer} s` : 'Timer: 30 s';
 
         timerElement.textContent = timerText;
         if (timer <= 0 && gameStarted) {
@@ -345,23 +346,31 @@ closeKeysModal.addEventListener('click', function () {
     keysModal.style.display = 'none'; // Приховуємо модальне вікно при кліку
 });
 
-// // РЕЗУЛЬТАТ 
+// РЕЗУЛЬТАТ 
 
-// const resultModal = document.getElementById('resultModal');
-// const resultHitCount = document.getElementById('resultHitCount');
-// const closeResultModal = document.getElementById('closeResultModal');
+const resultModal = document.getElementById('resultModal');
+const resultHitCount = document.getElementById('resultHitCount');
+const closeResultModalButton = document.getElementById('closeResultModal');
 
-// // Функція для відкриття модального вікна з результатом
-// function openResultModal() {
-//     resultHitCount.textContent = hitCount;
-//     resultModal.style.display = 'block';
-// }
+// Функція для відкриття модального вікна з результатом
+function openResultModal() {
+    resultHitCount.textContent = hitCount;
+    resultModal.style.display = 'flex';
+}
 
-// // Функція для закриття модального вікна з результатом
-// function closeResultModal() {
-//     resultModal.style.display = 'none';
-// }
+// Функція для закриття модального вікна з результатом
+function closeModal() {
+    resultModal.style.display = 'none';
+    rulesModal.style.display = 'none';
+    keysModal.style.display = 'none';
 
-// const closeResultModalButton = document.getElementById('closeResultModal');
-// ...
-// closeResultModalButton.addEventListener('click', closeResultModal);
+}
+
+closeResultModalButton.addEventListener('click', closeModal);
+
+// Обробник події в модальному вікні для кнопки "ЗАКРИТИ" або "OK" для натискання клавіші Enter ао Escape
+window.addEventListener('keydown', function (event) {
+    if (event.key === 'Enter' || event.key === 'Escape') {
+        closeModal();
+    }
+});

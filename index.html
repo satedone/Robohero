@@ -23,7 +23,7 @@
     <div class="table">
         <p>Count: <span id="count">0</span></p>
         <p>Outside: <span id="temperature-value">___</span></p>
-        <p>Timer: <span id="timer">60 s</span></p>
+        <p>Timer: <span id="timer">30 s</span></p>
     </div>
 
     <span id="direction">Left Up</span>
@@ -42,7 +42,7 @@
     <audio id="laserSound" src="mp3/shot.mp3"></audio>
 
     <!-- Модальне вікно для правил гри -->
-    <div class="modal" id="rulesModal">
+    <div id="rulesModal" class="modal">
         <div class="modal-content">
             <h2>Rules</h2>
             <p>You are a Robot Hero! Your task is to hit as many as possible monsters within 30 seconds.
@@ -53,7 +53,7 @@
     <!--  -->
 
     <!-- Модальне вікно КЕРУВАННЯ -->
-    <div class="keys" id="keysModal">
+    <div id="keysModal" class="keys">
         <div class="keys-content">
             <h2>CONTROL KEYS</h2>
             <span>1 - start    </span>
@@ -66,11 +66,11 @@
     <!--  -->
     
     <!-- Модальне вікно результат -->
-    <div id="resultModal" class="modal">
-        <div class="modal-content">
-            <span class="close" id="closeResultModal">&times;</span>
+    <div id="resultModal" class="result">
+        <div class="result-content">
             <h2>Гра завершена!</h2>
-            <p>Загальна кількість влучань: <span id="resultHitCount"></span></p>
+            <p>Влучань: <span id="resultHitCount"></span></p>
+            <button id="closeResultModal">OK</button>
         </div>
     </div>
 
